@@ -285,9 +285,9 @@ class RotaryDacdbMemberData extends RotaryDaCDb{
 	function getMemberData() {
 		
 		$options = get_option('rotary_dacdb');	
-	 	if (false ===  get_transient('dacdb_'.$options['rotary_dacdb_club']) ||  defined( 'WP_ROTARY_MEMBERS_FORCE_UPDATE')) {
+	 	if (false ===  get_transient( 'dacdb_'.$options['rotary_dacdb_club']) ||  defined( 'WP_ROTARY_MEMBERS_FORCE_UPDATE') || 1==1 ) {
 		  	$this->updateMemberData();
-			set_transient('dacdb_'.$options['rotary_dacdb_club'], 'dacdb', 60*60*24*7); 
+			set_transient('dacdb_'.$options['rotary_dacdb_club'], 'dacdb', 60*60*24*7 ); 
 	 	}
 	 	//members are updated first so that they are in place to add to committees
 		if ( defined ( 'WP_ROTARY_COMMITTEES_FORCE_UPDATE' ) ) {
@@ -381,7 +381,6 @@ class RotaryDacdbMemberData extends RotaryDaCDb{
 		$member_table_name = $wpdb->prefix . 'rotarycommittees';
 		$sql = "UPDATE {$wpdb->posts}  INNER JOIN {$wpdb->postmeta} ON {$wpdb->postmeta}.post_id = {$wpdb->posts}.ID SET {$wpdb->posts}.post_status = 'draft' WHERE {$wpdb->posts}.post_type = 'rotary-committees' AND {$wpdb->postmeta}.meta_key = 'committeenumber' AND {$wpdb->postmeta}.meta_value != '' AND {$wpdb->postmeta}.meta_value NOT IN (SELECT committeenum FROM {$member_table_name})";
 		$rows_affected = $wpdb->get_results($sql);
-		
 
 	}	
 	function updateMemberData() {
