@@ -12,7 +12,7 @@ class RotaryDacdbMemberData extends RotaryDaCDb{
 	private $rotaryAuth;
 	private $rotaryImageURL;
 	private static $countryCodes;
-	function __construct($rotaryAuth) {
+	function __construct( $rotaryAuth ) {
 		$this->rotaryAuth = $rotaryAuth;
 		self::$countryCodes = array(  
 			'AFG'=>'AFGHANISTAN',  
@@ -285,7 +285,7 @@ class RotaryDacdbMemberData extends RotaryDaCDb{
 	function getMemberData() {
 		
 		$options = get_option('rotary_dacdb');	
-	 	if (false ===  get_transient( 'dacdb_'.$options['rotary_dacdb_club']) ||  defined( 'WP_ROTARY_MEMBERS_FORCE_UPDATE') || 1==1 ) {
+	 	if (false ===  get_transient( 'dacdb_'.$options['rotary_dacdb_club']) ||  defined( 'WP_ROTARY_MEMBERS_FORCE_UPDATE') ) {
 		  	$this->updateMemberData();
 			set_transient('dacdb_'.$options['rotary_dacdb_club'], 'dacdb', 60*60*24*7 ); 
 	 	}
@@ -395,7 +395,7 @@ class RotaryDacdbMemberData extends RotaryDaCDb{
 			$rotaryclubmembers = $client->ClubMembers('0,1,5,148,154', 'UserName'); 
 		}
 		catch (SoapFault $exception) {
-			echo $exception;	
+			$exception = $client->__soap_fault;
 		}
 		$member_table_name = $wpdb->prefix . 'rotarymembers';
 		//print_r($rotaryclubmembers->MEMBERS);
