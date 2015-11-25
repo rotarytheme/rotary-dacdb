@@ -435,7 +435,7 @@ class RotaryDacdbMemberData extends RotaryDaCDb{
 			 $memberArray['busweb'] = strval($member->BUSWEB);
 			 $memberArray['memberyesno'] = true;
 			 $memberArray['profilepicture'] = strval($member->IMAGE);
-			 $user_id = email_exists($memberArray['email']);
+			 $user_id = email_exists( $memberArray['email'] );
 			 $newUser = false;
 			 if ( !$user_id) {
 				  remove_action('user_register', array($this->rotaryAuth, 'disable_function'));
