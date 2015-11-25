@@ -16,6 +16,7 @@ define( 'ROTARY_DACDB_CLASSES_PATH', dirname( __FILE__ ) . '/classes/' );
 define( 'ROTARY_DACDB_JAVASCRIPT_PATH', dirname( __FILE__ ) . '/js/' );
 define( 'ROTARY_DACDB_CSS_PATH', dirname( __FILE__ ) . '/css/' );
 define( 'ROTARY_DACDB_INCLUDES_PATH', dirname( __FILE__ ) . '/includes/' );
+define( 'ROTARY_DACDB_SHORTCODES_PATH', dirname( __FILE__ ) . '/shortcodes/' );
 
 define( 'ROTARY_DACDB_PLUGIN_URL', plugins_url( '', __FILE__ ) );
 define( 'ROTARY_DACDB_JAVASCRIPT_URL', plugins_url( '/js/', __FILE__ ) );
@@ -25,6 +26,7 @@ define( 'ROTARY_DACDB_PLUGIN_FILE', plugin_basename( __FILE__ ) );
 require_once( ROTARY_DACDB_CLASSES_PATH  . 'rotary-dacdb.php');
 require_once( ROTARY_DACDB_CLASSES_PATH  . 'rotary-dacdb-soapauth.php');
 include_once( ROTARY_DACDB_INCLUDES_PATH . 'rotary-dacdb-pluginupdater.php' );
+include_once( ROTARY_DACDB_SHORTCODES_PATH . 'shortcode-boardmembers.php' );
 
 
 //give the auto-installer something to call back
