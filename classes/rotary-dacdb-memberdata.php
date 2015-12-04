@@ -285,7 +285,7 @@ class RotaryDacdbMemberData extends RotaryDaCDb{
 	function getMemberData() {
 		
 		$options = get_option('rotary_dacdb');	
-	 	if (false ===  get_transient( 'dacdb_'.$options['rotary_dacdb_club']) ||  defined( 'WP_ROTARY_MEMBERS_FORCE_UPDATE') ) {
+	 	if ( false ===  get_transient( 'dacdb_'.$options['rotary_dacdb_club']) ||  defined( 'WP_ROTARY_MEMBERS_FORCE_UPDATE') ) {
 		  	$this->updateMemberData();
 			set_transient('dacdb_'.$options['rotary_dacdb_club'], 'dacdb', 60*60*24*7 ); 
 	 	}
@@ -311,7 +311,7 @@ class RotaryDacdbMemberData extends RotaryDaCDb{
 		}
 		$client = $this->rotaryAuth->get_soap_client();
 		$token = $this->rotaryAuth->get_soap_token();
-  		$header = new SoapHeader('http://xWeb', 'Token', $token, false );
+  		$header = new SoapHeader('http://xweb', 'Token', $token, false );
   		$client->__setSoapHeaders(array($header));  
 		$options = get_option('rotary_dacdb');
   		try {
@@ -389,7 +389,8 @@ class RotaryDacdbMemberData extends RotaryDaCDb{
 		$token = $this->rotaryAuth->get_soap_token();
 	  	$memberArray = array();
 		
-		$header = new SoapHeader('http://xWeb', 'Token', $token, false );
+		//$header = new SoapHeader('http://xWeb', 'Token', $token, false );
+		$header = new SoapHeader('http://xweb', 'Token', $token, false );
  		$client->__setSoapHeaders(array($header)); 
 		try {	
 			$rotaryclubmembers = $client->ClubMembers('0,1,5,148,154', 'UserName'); 
@@ -399,7 +400,7 @@ class RotaryDacdbMemberData extends RotaryDaCDb{
 		}
 		$member_table_name = $wpdb->prefix . 'rotarymembers';
 		//print_r($rotaryclubmembers->MEMBERS);
-		//$wpdb->query('TRUNCATE TABLE '.$member_table_name);
+		$wpdb->query('TRUNCATE TABLE '.$member_table_name);
   		foreach($rotaryclubmembers->MEMBERS->MEMBER as $member) {
 	  		//the following is old code from when WP did not allow usernames
 			if (is_email($member->LOGINNAME)) {
@@ -498,7 +499,7 @@ class RotaryDacdbMemberData extends RotaryDaCDb{
 		
 		$client = $this->rotaryAuth->get_soap_client();
 		$token = $this->rotaryAuth->get_soap_token();
-  		$header = new SoapHeader('http://xWeb', 'Token', $token, false );
+  		$header = new SoapHeader('http://xweb', 'Token', $token, false );
   		$client->__setSoapHeaders(array($header)); 
   		$coChairCount = 0;
   		$chairArray = array('CHAIR', 'MEMBERSHIP CHAIR', 'COMMITTEE CHAIR');
