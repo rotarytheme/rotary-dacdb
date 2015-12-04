@@ -26,7 +26,8 @@ class RotarySoapAuth extends RotaryAuth{
 	private $superadmin;
 	private static $instance;
 	function __construct() {
-		$this->client = new SoapClient('http://www.directory-online.com/xWeb/DaCdb.cfc?wsdl', array('trace' => true));
+		//$this->client = new SoapClient('http://www.directory-online.com/xWeb/DaCdb.cfc?wsdl', array('trace' => true));
+		$this->client = new SoapClient('http://www.directory-online.com/xWeb/DaCdb.cfc?wsdl', array('trace' => false));
 		$this->token = 0;
 		$this->superadmin = false;
 		//add_action('wp_authenticate', array($this, 'auth_check_login'), 1, 2);
