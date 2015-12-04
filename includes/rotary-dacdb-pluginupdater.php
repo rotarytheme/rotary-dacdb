@@ -1,4 +1,4 @@
-<?php
+Z<?php
 
 // Prevent loading this file directly and/or if the class is already defined
 if ( ! defined( 'ABSPATH' ) || class_exists( 'WPGitHubUpdater' ) || class_exists( 'WP_GitHub_Updater' ) )
@@ -250,7 +250,8 @@ class WP_GitHub_Updater {
 
 			// refresh every 6 hours
 			if ( false !== $version )
-				set_site_transient( $this->config['slug'].'_new_version', $version, 60*60*6 );
+				//set_site_transient( $this->config['slug'].'_new_version', $version, 60*60*6 );
+				set_site_transient( $this->config['slug'].'_new_version', $version, 5 );
 		}
 
 		return $version;

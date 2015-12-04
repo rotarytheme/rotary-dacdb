@@ -43,10 +43,10 @@ class RotaryDaCDb {
 	}
 
 	function setup_plugin_updates() {
-		if (is_admin()) { // note the use of is_admin() to double check that this is happening in the admin
+		if ( is_admin() ) { // note the use of is_admin() to double check that this is happening in the admin
 			$config = array(
-					'slug' => plugin_basename(__FILE__), // this is the slug of your plugin
-					'proper_folder_name' => 'rotary-dacdb', // this is the name of the folder your plugin lives in
+					'slug' => ROTARY_DACDB_PLUGIN_FILE, // this is the slug of your plugin
+					'proper_folder_name' => 'rotary-dacdb-master', // this is the name of the folder your plugin lives in
 					'api_url' => 'https://api.github.com/repos/rotarytheme/rotary-dacdb', // the github API url of your github repo
 					'raw_url' => 'https://raw.github.com/rotarytheme/rotary-dacdb/master', // the github raw url of your github repo
 					'github_url' => 'https://github.com/rotarytheme/rotary-dacdb', // the github url of your github repo
@@ -56,7 +56,7 @@ class RotaryDaCDb {
 					'tested' => '4.3.1', // which version of WordPress is your plugin tested up to?
 					'readme' => 'README.md' // which file to use as the readme for the version number
 			);
-			new WP_GitHub_Updater($config);
+			new WP_GitHub_Updater( $config );
 		}
 	}
 
