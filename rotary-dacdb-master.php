@@ -35,4 +35,3 @@ function rotary_dacdb_installed() {
 }
 
 $rotaryDaCDb = new RotaryDaCDb();
-?>
