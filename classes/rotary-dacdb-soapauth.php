@@ -26,8 +26,8 @@ class RotarySoapAuth extends RotaryAuth{
 	private $superadmin;
 	private static $instance;
 	function __construct() {
-		//$this->client = new SoapClient('http://www.directory-online.com/xWeb/DaCdb.cfc?wsdl', array('trace' => true));
-		$this->client = new SoapClient('http://www.directory-online.com/xWeb/DaCdb.cfc?wsdl', array('trace' => false));
+		$this->client = new SoapClient('http://www.directory-online.com/xWeb/DaCdb.cfc?wsdl', array('trace' => true));
+		//$this->client = new SoapClient('http://www.directory-online.com/xWeb/DaCdb.cfc?wsdl', array('trace' => false));
 		$this->token = 0;
 		$this->superadmin = false;
 		//add_action('wp_authenticate', array($this, 'auth_check_login'), 1, 2);
@@ -99,14 +99,15 @@ class RotarySoapAuth extends RotaryAuth{
 				//set the user token for more calls
 				if (is_email($username)) {
 			  		$email = 	$username;
-			  		$username = substr(trim($username), 0, strlen($username) - 4);
+			  		//removed by PAO 2015-12-95
+			  		//$username = substr(trim($username), 0, strlen($username) - 4);
 			  	}
 			  	else {
 					//temp email until we get the rest of the data
 					//used when a new user is created
-				  	$email = 	$username . '@hotmail.com';
+				  	$email = $username . '@example.com';
 			 	}
-				if ( $user_id = username_exists($username)) {
+				if ( $user_id = username_exists( $username )) {
 					update_user_meta( $user_id, 'rotary_user_session', $this->token);
 					wp_update_user( array('user_pass' => $password) );
                     $user = new WP_User ($user_id );
@@ -160,14 +161,7 @@ class RotarySoapAuth extends RotaryAuth{
 	 * @return true/false
 	 */	
 	 function soap_auth_validate($username, $password)	{
-         //user id 1 is the first admin
-		if (is_email($username)) {
-			 $testusername = substr(trim($username), 0, strlen($username) - 4);
-		}
-		else {
-					
-			$testusername = 	$username;
-		}
+		$testusername = 	$username;
 		 $user_id = username_exists($testusername);
 		 if (1 == $user_id) {
 			 $this->superadmin = true;
