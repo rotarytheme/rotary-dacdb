@@ -292,6 +292,7 @@ class RotaryDacdbMemberData extends RotaryDaCDb{
 	 			|| (defined('WP_ROTARY_COMMITTEES_FORCE_UPDATE') && true == WP_ROTARY_COMMITTEES_FORCE_UPDATE ) 
 	 			|| 0 < strpos( $user_email, '@example.com' )
 			) {
+			do_action( 'before_dacdb_update' );
 		  	$this->updateMemberData();
 			$this->updateCommitteeData();
 			$this->updateCommitteeMembers();
@@ -299,6 +300,8 @@ class RotaryDacdbMemberData extends RotaryDaCDb{
 	}
 	function updateMemberData() {
 		global $wpdb;
+		
+		
 		$client = $this->rotaryAuth->get_soap_client();
 		$token = $this->rotaryAuth->get_soap_token();
 		$memberArray = array();
@@ -344,21 +347,32 @@ class RotaryDacdbMemberData extends RotaryDaCDb{
 				$memberArray['memberyesno'] = true;
 				$memberArray['profilepicture'] = strval($member->IMAGE);
 				
+				$display_name = $memberArray['first_name'] . ' ' . $memberArray['last_name'];
+				
 				//check if the user already exists
 				$newUser = false;
 				
 				// if the username exists, then update the email address to this username, and be done
 				if( username_exists( $username )) {
 					$user_id = username_exists( $username );
-					wp_update_user( array ('ID' => $user_id, 'user_email' => $memberArray['email'], 'display_name' => $memberArray['first_name'] . ' ' . $memberArray['last_name']) ) ;
+					wp_update_user( array ('ID' => $user_id, 'user_email' => $memberArray['email'] ) ) ;
 					//echo '<br>Username found' . $user_id;
 				}
 				// if the username does not exist, but the email does, then coopy this user to a new user
 				elseif( email_exists( $memberArray['email'] )) {
 					$old_user_id = email_exists( $memberArray['email'] );
 					remove_action('user_register', array($this->rotaryAuth, 'disable_function'));
-					$password = wp_generate_password( $length=12, $include_standard_special_chars=false );
+					$password = wp_generate_password( $length=12, $include_standard_special_chars=false ); // don't worry - we ain't ever going to use this password
 					$user_id = wp_create_user( $username, $password, $memberArray['email'] );
+					wp_update_user( array ('ID' => $user_id, 'display_name' => $memberArray['first_name'] . ' ' . $memberArray['last_name'])) ;
+					//copy the user's roles
+					$old_user = new WP_User( $old_user_id );
+					$user = new WP_User( $user_id );
+					$roles = $old_user->roles;
+					foreach( $roles as $role ) {
+						$user->add_role( $role );
+					}
+					
 					wp_delete_user( $old_user_id, $user_id );
 					//echo '<br>Username changed' . $username;
 				}
@@ -368,7 +382,6 @@ class RotaryDacdbMemberData extends RotaryDaCDb{
 					remove_action('user_register', array($this->rotaryAuth, 'disable_function'));
 					$password = wp_generate_password( $length=12, $include_standard_special_chars=false );
 					$user_id = wp_create_user( $username, $password, $memberArray['email'] );
-					wp_update_user( array ('ID' => $user_id, 'display_name' => $memberArray['first_name'] . ' ' . $memberArray['last_name'], 'role' => 'contributor' )) ;
 					$newUser = true;
 					//echo '<br>User created' . $username;
 				}
@@ -376,8 +389,11 @@ class RotaryDacdbMemberData extends RotaryDaCDb{
 				if (!is_wp_error($user_id) && 1 != $user_id ) {
 		
 					foreach ($memberArray as $key => $value) {
+						wp_update_user( array ('ID' => $user_id, 'display_name' => $display_name )) ;
+						$user = new WP_User( $user_id );
+						$user->add_role( 'member' );
 						if ('profilepicture' == $key) {
-							$this->addProfilePhoto($user_id, $newUser, $value, $memberArray['first_name'].' ' .$memberArray['last_name']);
+							$this->addProfilePhoto($user_id, $newUser, $value, $display_name );
 						}
 						else {
 							update_user_meta( $user_id, $key, $value );
@@ -390,7 +406,7 @@ class RotaryDacdbMemberData extends RotaryDaCDb{
 			}//end foreach
 			
 			
-			// HAARD DELETE users who are no longer Rotary Members
+			// HARD DELETE users who are no longer Rotary Members
 			//$query = 'DELETE FROM '  .$wpdb->users .' WHERE '.$wpdb->users.'.ID != 1 AND '.$wpdb->users.'.user_login NOT IN (SELECT dacdbuser FROM ' .$member_table_name.')';
 			//$wpdb->query($query);
 			
