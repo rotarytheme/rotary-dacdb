@@ -2,7 +2,7 @@
 /*
 Plugin Name: Rotary DaCDb
 Description: This is a plugin for Rotary Clubs to Maintain Membership from DacDB. This plugin auto updates from github.
-Version: 1.22
+Version: 1.23
 Author: Merrill M. Mayer and Paul Osborn
 Author URI: http://www.koolkatwebdesigns.com/
 License: GPL2
