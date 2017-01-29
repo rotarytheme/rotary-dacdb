@@ -26,18 +26,25 @@ class RotarySoapAuth extends RotaryAuth{
 	private $superadmin;
 	private static $instance;
 	function __construct() {
-		$this->client = new SoapClient('http://www.directory-online.com/xWeb/DaCdb.cfc?wsdl', array('trace' => true));
-		//$this->client = new SoapClient('http://www.directory-online.com/xWeb/DaCdb.cfc?wsdl', array('trace' => false));
-		$this->token = 0;
-		$this->superadmin = false;
-		//add_action('wp_authenticate', array($this, 'auth_check_login'), 1, 2);
-		
-		add_filter( 'authenticate', array($this, 'auth_check_login'), 10, 3 );
-		add_filter( 'show_password_fields', array( $this, 'disable' ) );
-    	add_filter( 'allow_password_reset', array( $this, 'disable' ) );
-    	add_filter( 'gettext', array( $this, 'remove' ) );
-		//add_filter( 'authenticate', array($this, 'rotary_email_login_authenticate'), 20, 3 );
-		//add_filter('show_password_fields', array($this, 'soap_show_password_fields')); 
+		try {
+			$this->client = new SoapClient('http://www.directory-online.com/xWeb/DaCdb.cfc?wsdl', array('trace' => true));
+			//$this->client = new SoapClient('http://www.directory-online.com/xWeb/DaCdb.cfc?wsdl', array('trace' => false));
+			$this->token = 0;
+			$this->superadmin = false;
+			//add_action('wp_authenticate', array($this, 'auth_check_login'), 1, 2);
+			
+			add_filter( 'authenticate', array($this, 'auth_check_login'), 10, 3 );
+			add_filter( 'show_password_fields', array( $this, 'disable' ) );
+	    	add_filter( 'allow_password_reset', array( $this, 'disable' ) );
+	    	add_filter( 'gettext', array( $this, 'remove' ) );
+			//add_filter( 'authenticate', array($this, 'rotary_email_login_authenticate'), 20, 3 );
+			//add_filter('show_password_fields', array($this, 'soap_show_password_fields')); 
+		}
+	catch (Exception $e) {
+			echo "<h2>Exception Error!</h2>";
+			echo $e->getMessage();
+			die;
+		}
 	}
 	/**
 	 * get_instance()

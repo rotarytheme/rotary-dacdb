@@ -16,7 +16,7 @@ function rotary_dacdb_boardmembers_html( $atts ) {
 		
 				<div style="margin: auto; width: <?php echo $width;?>px; height: <?php echo $height;?>px; text-align: center; overflow: hidden;">
 	
-			<iframe style="height: <?php echo $height;?>px; width: <?php echo $width;?>px;" src="http://www.ismyrotaryclub.org/Club/ClubLeaders.cfm?D=<?php echo $district;?>&amp;ClubID=<?php echo $club;?>&amp;xsl=http%3A%2F%2Fbellevuerun.com%2FCL14.xsl" width="<?php echo $width;?>" height="<?php echo $height;?>" scrolling="no">
+			<iframe style="height: <?php echo $height;?>px; width: <?php echo $width;?>px;" src="http://www.ismyrotaryclub.org/Club/ClubLeaders.cfm?D=<?php echo $district;?>&amp;ClubID=<?php echo $club;?>&amp;xsl=http%3A%2F%2Fbbrcwebsite.com%2FCL14.xsl" width="<?php echo $width;?>" height="<?php echo $height;?>" scrolling="no">
 			</iframe>
 	
 		</div>
