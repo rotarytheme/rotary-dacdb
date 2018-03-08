@@ -1,10 +1,10 @@
 <?php
 
-function rotary_dacdb_boardmembers_html( $atts ) {
+function rotary_dacdb_boardmembers_html( $output, $atts ) {
 	extract( shortcode_atts( array(
 	'width' => '935',
 	'height'  => '1100'
-			), $atts ) );
+			), $atts ) ); 
 
 	$options = get_option('rotary_dacdb');
 	if ( 'yes' == $options['rotary_use_dacdb'] ) :
@@ -12,9 +12,10 @@ function rotary_dacdb_boardmembers_html( $atts ) {
 		$district = $options['rotary_dacdb_district'];
 	
 		ob_start();	
+	
 		?>
 		<div style="margin: auto; width: <?php echo $width;?>px; height: <?php echo $height;?>px; text-align: center; overflow: hidden;">
-			<iframe style="height: <?php echo $height;?>px; width: <?php echo $width;?>px;" src="http://www.ismyrotaryclub.org/Club/ClubLeaders.cfm?D=<?php echo $district;?>&amp;ClubID=<?php echo $club;?>&amp;xsl=http%3A%2F%2Fbbrcwebsite.com%2FCL14.xsl" width="<?php echo $width;?>" height="<?php echo $height;?>" scrolling="no">
+			<iframe style="height: <?php echo $height;?>px; width: <?php echo $width;?>px;" src="<?php echo $_SERVER['REQUEST_SCHEME']; ?>://www.ismyrotaryclub.org/Club/ClubLeaders.cfm?D=<?php echo $district;?>&amp;ClubID=<?php echo $club;?>&amp;xsl=http%3A%2F%2Fbbrcwebsite.com%2FCL14.xsl" width="<?php echo $width;?>" height="<?php echo $height;?>" scrolling="no">
 			</iframe>
 		</div>
 		<?php 
@@ -24,6 +25,6 @@ function rotary_dacdb_boardmembers_html( $atts ) {
 return $output;
 
 }
-add_filter ( 'rotary_boardmembers', 'rotary_dacdb_boardmembers_html', 10, 1 );
+add_filter ( 'rotary_boardmembers', 'rotary_dacdb_boardmembers_html', 10, 2 );
 
 

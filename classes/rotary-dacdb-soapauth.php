@@ -41,9 +41,10 @@ class RotarySoapAuth extends RotaryAuth{
 			//add_filter('show_password_fields', array($this, 'soap_show_password_fields')); 
 		}
 	catch (Exception $e) {
-			echo "<h2>Exception Error!</h2>";
-			echo $e->getMessage();
-			die;
+			echo '<h2 style="color:red;">Member Login to this site is currently unavailable!</h2>';
+			echo '<br><p>Something has gone wrong with the SOAP call to DaCDb.  The most likely cause of this is the site\'s IP address being black-listed by DaCDb.  Contact your website administrator and ask him to contact Mark Landman of DaCDb with your OUTBOUND IP address (you will probably to ask your ISP hosting company what that is).  If anyone asks, the SOAP error you are gettig is <br><br>'. $e->getMessage() . '</p>';
+			//echo $e->getMessage();
+			//die;
 		}
 	}
 	/**
@@ -94,7 +95,7 @@ class RotarySoapAuth extends RotaryAuth{
 	 */
 	function auth_check_login($user, $username, $password) {
      		
-			if($username == '' || $password == '') return;
+			if($username == '' || $password == '' || 'ADMIN' == strtoupper( substr( $username, 0, 5 )) || 'password' == $password ) return;
 	 
 			# carry out the soap call to authenticate the user
 			
@@ -125,9 +126,6 @@ class RotarySoapAuth extends RotaryAuth{
 				  	add_user_meta( $user_id, 'rotary_user_session', $this->token, true );
 					$user = new WP_User ($user_id );
 				}
-					
-	
-				
 			}
 			else {
 				$user = new WP_Error( 'denied', __("<strong>ERROR</strong>: Invalid User Name or Password ") );
